@@ -70,9 +70,9 @@ void DialogMagasinier::editMode(bool state)
         ui->tableWidgetStock->clearFocus();
         ui->lineEditRef->clear();
         ui->lineEditLib->clear();
-        ui->spinBoxQte->clear();
-        ui->doubleSpinBoxPU_HT->clear();
-        ui->doubleSpinBoxPU_TTC->clear();
+        ui->spinBoxQte->setValue(0);
+        ui->doubleSpinBoxPU_HT->setValue(0.00);
+        ui->doubleSpinBoxPU_TTC->setValue(0.00);
     }
 }
 
