@@ -2,6 +2,8 @@
 #define DIALOGMAGASINIER_H
 
 #include <QDialog>
+#include <QSqlQuery>
+#include <QDebug>
 
 namespace Ui {
 class DialogMagasinier;
@@ -14,6 +16,11 @@ class DialogMagasinier : public QDialog
 public:
     explicit DialogMagasinier(QWidget *parent = 0);
     ~DialogMagasinier();
+    void fillStockTable();
+    void fillPartForm(int row);
+
+private slots:
+    void on_tableWidgetStock_itemSelectionChanged();
 
 private:
     Ui::DialogMagasinier *ui;
