@@ -26,7 +26,7 @@ CREATE TABLE `Facture`(
 )engine=innodb charset=utf8;
 
 CREATE TABLE `Utilisateur`(
-	`userNum` INTEGER,
+	`userNum` INTEGER auto_increment,
 	`userNom` VARCHAR(30),
 	`userPrenom` VARCHAR(30),
 	`userLogin` VARCHAR(30),
@@ -35,7 +35,7 @@ CREATE TABLE `Utilisateur`(
 )engine=innodb charset=utf8;
 
 CREATE TABLE `Role`(
-	`roleNum` INTEGER,
+	`roleNum` INTEGER auto_increment,
 	`roleLib` VARCHAR(25),
 	primary key(`roleNum`)
 )engine=innodb charset=utf8;
@@ -50,7 +50,7 @@ CREATE TABLE `Piece`(
 )engine=innodb charset=utf8;
 
 CREATE TABLE `Fournisseur`(
-	`fournisseurNum` INTEGER,
+	`fournisseurNum` INTEGER auto_increment,
 	`fournisseurNom` VARCHAR(30),
 	`fournisseurTel` VARCHAR(10),
 	`fournisseurMail` VARCHAR(50),
@@ -93,13 +93,13 @@ CREATE TABLE `Catalogue`(
 )engine=innodb charset=utf8;
 
 CREATE TABLE `Marque`(
-	`marqueNum` INTEGER,
+	`marqueNum` INTEGER auto_increment,
 	`marqueNom` VARCHAR(30),
 	primary key(`marqueNum`)
 )engine=innodb charset=utf8;
 
 CREATE TABLE `Modele`(
-	`modeleNum` INTEGER,
+	`modeleNum` INTEGER auto_increment,
 	`modeleNom` VARCHAR(30),
 	`marqueNum` INTEGER NOT NULL,
    	foreign key (`marqueNum`) references Marque(`marqueNum`),
