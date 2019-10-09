@@ -125,6 +125,7 @@ CREATE TABLE `Vehicule`(
 
 CREATE TABLE `Reparation`(
 	`reparNum` INTEGER,
+	`reparLib` VARCHAR(255),
 	`reparDateDebut` DATETIME,
 	`reparDateFin` DATETIME,
 	`reparDuree` INTEGER,
