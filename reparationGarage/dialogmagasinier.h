@@ -18,9 +18,12 @@ public:
     ~DialogMagasinier();
     void fillStockTable();
     void fillPartForm(int row);
+    void editMode(bool state);
 
 private slots:
     void on_tableWidgetStock_itemSelectionChanged();
+
+    void on_toolButtonCancel_clicked();
 
 private:
     Ui::DialogMagasinier *ui;

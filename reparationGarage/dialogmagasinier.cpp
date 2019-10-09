@@ -38,6 +38,7 @@ void DialogMagasinier::fillStockTable()
         noLigne++;
     }
     ui->tableWidgetStock->resizeColumnsToContents();
+    editMode(false);
 }
 
 void DialogMagasinier::fillPartForm(int row)
@@ -52,9 +53,35 @@ void DialogMagasinier::fillPartForm(int row)
     ui->spinBoxQte->setValue(laQteDispo);
     ui->doubleSpinBoxPU_HT->setValue(lePU_HT);
     ui->doubleSpinBoxPU_TTC->setValue(lePU_TTC);
+    editMode(true);
+}
+
+void DialogMagasinier::editMode(bool state)
+{
+    if(state) {
+        ui->toolButtonAdd->hide();
+        ui->toolButtonEdit->show();
+        ui->toolButtonDelete->show();
+    } else {
+        ui->toolButtonAdd->show();
+        ui->toolButtonEdit->hide();
+        ui->toolButtonDelete->hide();
+        ui->tableWidgetStock->clearSelection();
+        ui->tableWidgetStock->clearFocus();
+        ui->lineEditRef->clear();
+        ui->lineEditLib->clear();
+        ui->spinBoxQte->clear();
+        ui->doubleSpinBoxPU_HT->clear();
+        ui->doubleSpinBoxPU_TTC->clear();
+    }
 }
 
 void DialogMagasinier::on_tableWidgetStock_itemSelectionChanged()
 {
     fillPartForm(ui->tableWidgetStock->currentRow());
+}
+
+void DialogMagasinier::on_toolButtonCancel_clicked()
+{
+    editMode(false);
 }
