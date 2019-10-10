@@ -3,7 +3,7 @@
 # Project created by QtCreator 2019-10-09T09:50:08
 #
 #-------------------------------------------------
-
+ QT += sql
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -24,8 +24,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    dialogauthentification.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    dialogauthentification.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    dialogauthentification.ui
