@@ -15,6 +15,11 @@ public:
     explicit DialogDirecteurAjoutRole(QWidget *parent = 0);
     ~DialogDirecteurAjoutRole();
 
+private slots:
+    void on_pushButtonAddCanc_clicked();
+
+    void on_pushButtonAddConf_clicked();
+
 private:
     Ui::DialogDirecteurAjoutRole *ui;
 };

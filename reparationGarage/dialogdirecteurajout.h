@@ -15,6 +15,11 @@ public:
     explicit DialogDirecteurAjout(QWidget *parent = 0);
     ~DialogDirecteurAjout();
 
+private slots:
+    void on_pushButtonCancel_clicked();
+
+    void on_pushButtonValid_clicked();
+
 private:
     Ui::DialogDirecteurAjout *ui;
 };

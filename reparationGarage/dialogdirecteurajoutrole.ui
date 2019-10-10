@@ -82,7 +82,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEditAddPrenom"/>
+      <widget class="QLineEdit" name="lineEditAddRole"/>
      </item>
      <item>
       <spacer name="horizontalSpacer_14">

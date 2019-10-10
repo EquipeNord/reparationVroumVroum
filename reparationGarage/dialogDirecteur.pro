@@ -1,14 +1,14 @@
 #-------------------------------------------------
 #
-# Project created by QtCreator 2019-10-09T09:50:08
+# Project created by QtCreator 2019-10-10T14:18:52
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = reparationGarage
+TARGET = dialogDirecteur
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
@@ -21,11 +21,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+QMAKE_CXXFLAGS += -std=c++11
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+        dialogdirecteur.cpp \
+        dialogdirecteurajoutrole.cpp \
+    dialogdirecteurajout.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+            dialogdirecteur.h \
+            dialogdirecteurajoutrole.h \
+    dialogdirecteurajout.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+            dialogdirecteur.ui \
+            dialogdirecteurajoutrole.ui \
+    dialogdirecteurajout.ui
