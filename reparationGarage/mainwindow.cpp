@@ -14,7 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setup();
 }
 
 MainWindow::~MainWindow()
@@ -24,8 +23,11 @@ MainWindow::~MainWindow()
 
 void MainWindow::setId(QString sonId)
 {
+    //on recupere l'id de celui qui se connecte
     utilisateurId = sonId;
     qDebug() << "l'id recup est : "+ utilisateurId;
+    //on lance le setup
+    setup();
 }
 
 void MainWindow::setup()

@@ -25,10 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    dialogauthentification.cpp
+    dialogauthentification.cpp \
+	dialogtachedujour.cpp
 
 HEADERS  += mainwindow.h \
-    dialogauthentification.h
+    dialogauthentification.h \
+	dialogtachedujour.h
 
 FORMS    += mainwindow.ui \
-    dialogauthentification.ui
+    dialogauthentification.ui \
+	dialogtachedujour.ui

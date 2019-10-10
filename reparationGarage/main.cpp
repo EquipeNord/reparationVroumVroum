@@ -23,12 +23,14 @@ qDebug() << "Ok";
         //Créer la condition d'ouverture de la main window
      }
      DialogAuthentification dAuth;
-
+    //si la boite de dialog de connexion est confirmée
     if (dAuth.exec()==QDialog::Accepted)
     {
-
+    //on cree la MW
     MainWindow w;
-    w.getId(dAuth.idConnect);
+    //on lui donne l'id de l'user via la methode setId()
+    w.setId(dAuth.idConnect);
+    //on l'affiche
     w.show();
     return a.exec();
     }
