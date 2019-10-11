@@ -16,6 +16,7 @@ public:
     ~DialogDirecteur();
     void actualiser();
     void remplirLesRole();
+    void remplirTableDeRoles();
 
 private slots:
     void on_tableWidgetUser_clicked(const QModelIndex &index);
@@ -37,6 +38,8 @@ private slots:
     void on_pushButton_3_clicked();
 
     void on_pushButtonAddRole_clicked();
+
+    void on_pushButtonDelRole_clicked();
 
 private:
     Ui::DialogDirecteur *ui;

@@ -13,6 +13,7 @@ DialogDirecteur::DialogDirecteur(QWidget *parent) :
 {
     ui->setupUi(this);
     actualiser();
+    ui->pushButtonDelRole->setEnabled(false);
 }
 
 void DialogDirecteur::actualiser()
@@ -54,20 +55,16 @@ qDebug("void DialogDirecteur::remplirLesRole()");
         QString nomRole = query.value("roleLib").toString();
 
 
-        ui->comboBoxRoles->addItem(nomRole,query.value('roleNum').toInt());
+        ui->comboBoxRoles->addItem(nomRole,query.value('roleNum'));
 
     }
 
 }
 
-DialogDirecteur::~DialogDirecteur()
+void DialogDirecteur::remplirTableDeRoles()
 {
-    delete ui;
-}
-
-void DialogDirecteur::on_tableWidgetUser_clicked(const QModelIndex &index)
-{
-qDebug ("void DialogDirecteur::on_tableWidgetUser_clicked(const QModelIndex &index)");
+qDebug() << "void DialogDirecteur::remplirTableDeRoles()";
+    ui->pushButtonDelRole->setEnabled(false);
     QString stringQuery  ="Select roleLib from Role where  roleNum in (select roleNum from User_Role where userNum=";
             stringQuery +=ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),0)->text();
             stringQuery +=")";
@@ -82,6 +79,17 @@ qDebug ("void DialogDirecteur::on_tableWidgetUser_clicked(const QModelIndex &ind
         ui->tableWidgetRoles->setItem(rowCount,0,new QTableWidgetItem(roleLibValue));
         rowCount++;
     }
+}
+
+DialogDirecteur::~DialogDirecteur()
+{
+    delete ui;
+}
+
+void DialogDirecteur::on_tableWidgetUser_clicked(const QModelIndex &index)
+{
+qDebug ("void DialogDirecteur::on_tableWidgetUser_clicked(const QModelIndex &index)");
+    remplirTableDeRoles();
 }
 
 
@@ -101,7 +109,7 @@ qDebug() << "void DialogDirecteur::on_pushButton_clicked()";
 
 void DialogDirecteur::on_tableWidgetRoles_clicked(const QModelIndex &index)
 {
-
+        ui->pushButtonDelRole->setEnabled(true);
 }
 
 void DialogDirecteur::on_pushButton_2_clicked()
@@ -127,8 +135,8 @@ void DialogDirecteur::on_pushButton_4_clicked()
 
 void DialogDirecteur::on_tableWidgetUser_doubleClicked(const QModelIndex &index)
 {
-    ui->lineEditPrenom->setText(ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),1)->text());
-    ui->lineEditNom->setText(ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),2)->text());
+    ui->lineEditNom->setText(ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),1)->text());
+    ui->lineEditPrenom->setText(ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),2)->text());
     ui->lineEditLogin->setText(ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),3)->text());
 
 
@@ -170,13 +178,56 @@ void DialogDirecteur::on_pushButton_3_clicked()
 void DialogDirecteur::on_pushButtonAddRole_clicked()
 {
 
-     QString queryString  = "insert into User_Role Values (";
-             queryString += ui->comboBoxRoles->currentData().toString();
-             queryString += ",";
-             queryString += ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),0)->text();
-             queryString += ");";
+qDebug() << "void DialogDirecteur::on_pushButtonAddRole_clicked()";
+
+    QString queryStringId  ="Select roleNum from Role where roleLib='";
+            queryStringId +=ui->comboBoxRoles->currentText();
+            queryStringId +="';";
+    qDebug() << queryStringId;
+
+
+    QSqlQuery queryId(queryStringId);
+    queryId.next();
+
+    QString queryString  = "insert into User_Role Values (";
+            queryString += queryId.value(0).toString();
+            queryString += ",";
+            queryString += ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),0)->text();
+            queryString += ");";
 
     qDebug() << queryString;
+
+    QSqlQuery query(queryString);
+    remplirTableDeRoles();
+
+
+}
+
+void DialogDirecteur::on_pushButtonDelRole_clicked()
+{
+qDebug() << "void DialogDirecteur::on_pushButtonDelRole_clicked()";
+
+
+    QString queryStringId  ="Select roleNum from Role where roleLib='";
+            queryStringId +=ui->tableWidgetRoles->currentItem()->text();
+            queryStringId +="';";
+    qDebug() << queryStringId;
+
+
+    QSqlQuery queryId(queryStringId);
+    queryId.next();
+
+    QString queryString  = "delete from  User_Role where roleNum=";
+            queryString += queryId.value(0).toString();
+            queryString += " and userNum=";
+            queryString += ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),0)->text();
+            queryString += ";";
+
+    qDebug() << queryString;
+
+    QSqlQuery query(queryString);
+    remplirTableDeRoles();
+
 
 
 }
