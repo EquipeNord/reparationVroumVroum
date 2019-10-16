@@ -163,8 +163,7 @@ public:
 
         lineEditRef = new QLineEdit(widgetPartForm);
         lineEditRef->setObjectName(QStringLiteral("lineEditRef"));
-        lineEditRef->setStyleSheet(QStringLiteral("color: rgb(85, 85, 85);"));
-        lineEditRef->setReadOnly(true);
+        lineEditRef->setStyleSheet(QStringLiteral(""));
 
         verticalLayout_2->addWidget(lineEditRef);
 
@@ -531,7 +530,7 @@ public:
 
         retranslateUi(DialogMagasinier);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(DialogMagasinier);

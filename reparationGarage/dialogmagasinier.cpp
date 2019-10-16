@@ -65,6 +65,8 @@ void DialogMagasinier::editMode(bool state)
     if(state) {
         ui->toolButtonAdd->hide();
         ui->toolButtonEdit->show();
+        ui->lineEditRef->setReadOnly(true);
+        ui->lineEditRef->setStyleSheet("color: rgb(85, 85, 85);");
         ui->labelFormPart->setText(tr("Edit a part"));
     } else {
         ui->tableWidgetStock->clearSelection();
@@ -72,6 +74,8 @@ void DialogMagasinier::editMode(bool state)
         ui->toolButtonAdd->show();
         ui->toolButtonEdit->hide();
         ui->lineEditRef->clear();
+        ui->lineEditRef->setReadOnly(false);
+        ui->lineEditRef->setStyleSheet("color: rgb(0, 0, 0);");
         ui->lineEditLib->clear();
         ui->spinBoxQte->setValue(0);
         ui->doubleSpinBoxPU_HT->setValue(0.00);

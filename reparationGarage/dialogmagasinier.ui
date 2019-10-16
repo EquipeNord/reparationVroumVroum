@@ -43,7 +43,7 @@
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabManageStock">
       <attribute name="title">
@@ -132,10 +132,7 @@
           <item>
            <widget class="QLineEdit" name="lineEditRef">
             <property name="styleSheet">
-             <string notr="true">color: rgb(85, 85, 85);</string>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
+             <string notr="true"/>
             </property>
            </widget>
           </item>
