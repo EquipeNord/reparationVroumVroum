@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QSqlQuery>
 #include <QDebug>
+#include <QArrayData>
 
 namespace Ui {
 class DialogMagasinier;
@@ -16,14 +17,56 @@ class DialogMagasinier : public QDialog
 public:
     explicit DialogMagasinier(QWidget *parent = 0);
     ~DialogMagasinier();
-    void fillStockTable();
-    void fillPartForm(int row);
-    void editMode(bool state);
 
 private slots:
     void on_tableWidgetStock_itemSelectionChanged();
 
     void on_toolButtonCancel_clicked();
+
+    void envoiRequetePiece(QString typeReq);
+
+    void on_toolButtonAdd_clicked();
+
+    void on_toolButtonEdit_clicked();
+
+    void on_tabWidget_currentChanged(int index);
+
+    void fillStockTable();
+
+    void fillPartForm(int row);
+
+    void editMode(bool state);
+
+    void fillRepairsTable();
+
+    void on_tableWidgetRepairsList_itemSelectionChanged();
+
+    void fillPartsList(QString reparNum);
+    void fillPartsComboBox(QString refPiece);
+
+    void on_comboBoxParts_currentIndexChanged(int index);
+
+    void on_toolButtonAddToRepair_clicked();
+
+    void on_tableWidgetPartsUsed_itemSelectionChanged();
+
+    void fillPartsToRepairForm(QString laRef, QString leLib, int laQteUtilisee);
+
+    void on_toolButtonEditToRepair_clicked(bool supprimer);
+
+    void on_toolButtonRemoveToRepair_clicked();
+
+    void on_toolButtonCancelToRepair_clicked();
+
+    void fillMatchingTable();
+
+    void on_lineEditRefMatch_textChanged(const QString &arg1);
+
+    void on_pushButton_clicked();
+
+    void fillComboBoxSuppliers();
+
+    void on_comboBoxSupplierMatch_currentTextChanged(const QString &arg1);
 
 private:
     Ui::DialogMagasinier *ui;
