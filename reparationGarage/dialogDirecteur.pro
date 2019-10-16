@@ -27,15 +27,12 @@ QMAKE_CXXFLAGS += -std=c++11
 SOURCES += main.cpp\
         mainwindow.cpp \
         dialogdirecteur.cpp \
-        dialogdirecteurajoutrole.cpp \
     dialogdirecteurajout.cpp
 
 HEADERS  += mainwindow.h \
             dialogdirecteur.h \
-            dialogdirecteurajoutrole.h \
     dialogdirecteurajout.h
 
 FORMS    += mainwindow.ui \
             dialogdirecteur.ui \
-            dialogdirecteurajoutrole.ui \
     dialogdirecteurajout.ui

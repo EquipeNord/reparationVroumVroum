@@ -1,7 +1,6 @@
 #include "dialogdirecteur.h"
 #include "ui_dialogdirecteur.h"
 #include "dialogdirecteurajout.h"
-#include "dialogdirecteurajoutrole.h"
 #include <QDebug>
 #include <QSqlQuery>
 #include <QMessageBox>
@@ -14,6 +13,7 @@ DialogDirecteur::DialogDirecteur(QWidget *parent) :
     ui->setupUi(this);
     actualiser();
     ui->pushButtonDelRole->setEnabled(false);
+    ui->pushButtonAddRole->setEnabled(false);
 }
 
 void DialogDirecteur::actualiser()
@@ -81,15 +81,18 @@ qDebug() << "void DialogDirecteur::remplirTableDeRoles()";
     }
 }
 
+void DialogDirecteur::clearData()
+{
+    ui->labelAddIdVal->clear();
+    ui->lineEditNom->clear();
+    ui->lineEditPrenom->clear();
+    ui->lineEditLogin->clear();
+    ui->pushButtonAddRole->setEnabled(false);
+}
+
 DialogDirecteur::~DialogDirecteur()
 {
     delete ui;
-}
-
-void DialogDirecteur::on_tableWidgetUser_clicked(const QModelIndex &index)
-{
-qDebug ("void DialogDirecteur::on_tableWidgetUser_clicked(const QModelIndex &index)");
-    remplirTableDeRoles();
 }
 
 
@@ -98,81 +101,18 @@ void DialogDirecteur::on_pushButtonModCanc_clicked()
     close();
 }
 
-void DialogDirecteur::on_pushButton_clicked()
-{
-qDebug() << "void DialogDirecteur::on_pushButton_clicked()";
-    DialogDirecteurAjout dialogAjout;
-    if(dialogAjout.exec()==DialogDirecteurAjout::Accepted){
-        actualiser();
-    }
-}
+
 
 void DialogDirecteur::on_tableWidgetRoles_clicked(const QModelIndex &index)
 {
         ui->pushButtonDelRole->setEnabled(true);
 }
 
-void DialogDirecteur::on_pushButton_2_clicked()
-{
-    int rep= QMessageBox::warning(this,tr("Delete"),tr("do you really want to delete?"),QMessageBox::Yes,QMessageBox::No);
-    if(rep==QMessageBox::Yes){
-        QString queryString  ="Delete from Utilisateur where userNum=";
-                queryString +=ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),0)->text();
-                queryString +=";";
-        qDebug() << queryString;
-        QSqlQuery query(queryString);
-    }
-    actualiser();
-}
 
-void DialogDirecteur::on_pushButton_4_clicked()
-{
-    DialogDirecteurAjoutRole dialog;
-    if(dialog.exec()==DialogDirecteurAjoutRole::Accepted){
-        remplirLesRole();
-    }
-}
-
-void DialogDirecteur::on_tableWidgetUser_doubleClicked(const QModelIndex &index)
-{
-    ui->lineEditNom->setText(ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),1)->text());
-    ui->lineEditPrenom->setText(ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),2)->text());
-    ui->lineEditLogin->setText(ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),3)->text());
-
-
-}
 
 void DialogDirecteur::on_pushButton_5_clicked()
 {
     actualiser();
-}
-
-void DialogDirecteur::on_pushButton_3_clicked()
-{
-//    UPDATE [LOW_PRIORITY] [IGNORE] table_references
-//        SET assignment_list
-//        [WHERE where_condition]
-
-
-    QString queryString  ="Update Utilisateur set ";
-            queryString +="userNom='";
-            queryString +=ui->lineEditNom->text();
-            queryString +="',userPrenom='";
-            queryString +=ui->lineEditPrenom->text();
-            queryString +="',userLogin='";
-            queryString +=ui->lineEditLogin->text();
-            queryString +="' where userNum=";
-            queryString +=ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),0)->text();
-            queryString +=";";
-
-    qDebug() << queryString;
-    QSqlQuery query(queryString);
-    actualiser();
-
-
-
-
-
 }
 
 void DialogDirecteur::on_pushButtonAddRole_clicked()
@@ -230,4 +170,76 @@ qDebug() << "void DialogDirecteur::on_pushButtonDelRole_clicked()";
 
 
 
+}
+
+
+void DialogDirecteur::on_tableWidgetUser_cellClicked(int row, int column)
+{
+    ui->labelAddIdVal->setText(ui->tableWidgetUser->item(row,0)->text());
+    ui->lineEditNom->setText(ui->tableWidgetUser->item(row,1)->text());
+    ui->lineEditPrenom->setText(ui->tableWidgetUser->item(row,2)->text());
+    ui->lineEditLogin->setText(ui->tableWidgetUser->item(row,3)->text());
+
+    remplirTableDeRoles();
+    ui->pushButtonAddRole->setEnabled(true);
+}
+
+void DialogDirecteur::on_pushButtonAddUser_clicked()
+{
+    qDebug() << "void DialogDirecteur::on_pushButton_clicked()";
+        DialogDirecteurAjout dialogAjout;
+        if(dialogAjout.exec()==DialogDirecteurAjout::Accepted){
+            actualiser();
+        }
+}
+
+void DialogDirecteur::on_pushButtonDelUSer_clicked()
+{
+    int rep= QMessageBox::warning(this,tr("Delete"),tr("do you really want to delete?"),QMessageBox::Yes,QMessageBox::No);
+    if(rep==QMessageBox::Yes){
+
+        QString queryString  ="Delete from User_Role where userNum=";
+                queryString +=ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),0)->text();
+                queryString +=";";
+
+                queryString +="Delete from Utilisateur where userNum=";
+                queryString +=ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),0)->text();
+                queryString +=";";
+
+
+        qDebug() << queryString;
+        QSqlQuery query(queryString);
+    }
+    actualiser();
+    clearData();
+}
+
+void DialogDirecteur::on_pushButtonModUSer_clicked()
+{
+
+
+        QString queryString  ="Update Utilisateur set ";
+                queryString +="userNom='";
+                queryString +=ui->lineEditNom->text();
+                queryString +="',userPrenom='";
+                queryString +=ui->lineEditPrenom->text();
+                queryString +="',userLogin='";
+                queryString +=ui->lineEditLogin->text();
+                queryString +="' where userNum=";
+                queryString +=ui->tableWidgetUser->item(ui->tableWidgetUser->currentRow(),0)->text();
+                queryString +=";";
+
+        qDebug() << queryString;
+        QSqlQuery query(queryString);
+        actualiser();
+        clearData();
+
+
+}
+
+
+
+void DialogDirecteur::on_pushButtonAband_clicked()
+{
+    clearData();
 }

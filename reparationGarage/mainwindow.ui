@@ -17,14 +17,14 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>110</y>
+      <x>170</x>
+      <y>100</y>
       <width>80</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
-     <string>open</string>
+     <string>PushButton</string>
     </property>
    </widget>
   </widget>
