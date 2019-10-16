@@ -1,20 +1,33 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
+#include <QApplication>
+
+
 #include "dialogtachedujour.h"
 #include <QtDebug>
 #include <QSqlQuery>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    setup();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::setId(QString sonId)
+{
+    //on recupere l'id de celui qui se connecte
+    utilisateurId = sonId;
+    qDebug() << "l'id recup est : "+ utilisateurId;
+    //on lance le setup
+    setup();
 }
 
 void MainWindow::setup()

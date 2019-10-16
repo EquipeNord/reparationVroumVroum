@@ -2,6 +2,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QString>
+#include <QDebug>
+
 
 namespace Ui {
 class MainWindow;
@@ -14,7 +17,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    QString utilisateurId = "10";
+
+    QString utilisateurId;
+    void setId(QString sonId);
 
 private slots:
     void on_calendarWidgetPlanning_clicked(const QDate &date);
