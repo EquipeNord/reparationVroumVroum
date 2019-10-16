@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>work.png</file>
+        <file>secretary.png</file>
+        <file>mechanic.png</file>
+        <file>manager(1).png</file>
+        <file>accounting.png</file>
+    </qresource>
+</RCC>

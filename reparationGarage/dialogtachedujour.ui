@@ -99,6 +99,9 @@
      </item>
      <item>
       <widget class="QTableWidget" name="tableWidgetReparation">
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
        <column>
         <property name="text">
          <string>Id</string>
@@ -159,6 +162,9 @@
      </item>
      <item>
       <widget class="QTableWidget" name="tableWidgetLivraison">
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
        <column>
         <property name="text">
          <string>Id</string>

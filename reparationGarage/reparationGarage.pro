@@ -35,3 +35,6 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     dialogauthentification.ui \
 	dialogtachedujour.ui
+
+RESOURCES += \
+    images.qrc
