@@ -7,7 +7,7 @@ DialogMagasinier::DialogMagasinier(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->tabWidget->setCurrentIndex(0);
-    ui->toolButtonEditToRepair->hide();
+    on_tabWidget_currentChanged(0);
 }
 
 DialogMagasinier::~DialogMagasinier()
@@ -17,12 +17,12 @@ DialogMagasinier::~DialogMagasinier()
 
 void DialogMagasinier::fillStockTable()
 {
-qDebug() << "void DialogMagasinier::fillStockTable()";
+//qDebug() << "void DialogMagasinier::fillStockTable()";
     ui->tableWidgetStock->clearContents();
     ui->tableWidgetStock->clearFocus();
     ui->tableWidgetStock->setRowCount(0);
     QString tReqFillStock = "select pieceRef, pieceLib, pieceQteDispo, piecePU_HT, piecePU_TTC from Piece";
-qDebug() << tReqFillStock;
+//qDebug() << tReqFillStock;
     QSqlQuery reqFillStock(tReqFillStock);
     int noLigne = 0;
     while (reqFillStock.next()) {
@@ -45,7 +45,7 @@ qDebug() << tReqFillStock;
 
 void DialogMagasinier::fillPartForm(int row)
 {
-qDebug() << "void DialogMagasinier::fillPartForm(int row)";
+//qDebug() << "void DialogMagasinier::fillPartForm(int row)";
     QString laRef = ui->tableWidgetStock->item(row, 0)->text();
     QString leLib = ui->tableWidgetStock->item(row, 1)->text();
     int laQteDispo = ui->tableWidgetStock->item(row, 2)->text().toInt();
@@ -61,7 +61,7 @@ qDebug() << "void DialogMagasinier::fillPartForm(int row)";
 
 void DialogMagasinier::editMode(bool state)
 {
-qDebug() << "void DialogMagasinier::editMode(bool state)";
+//qDebug() << "void DialogMagasinier::editMode(bool state)";
     if(state) {
         ui->toolButtonAdd->hide();
         ui->toolButtonEdit->show();
@@ -82,7 +82,7 @@ qDebug() << "void DialogMagasinier::editMode(bool state)";
 
 void DialogMagasinier::fillRepairsTable()
 {
-qDebug() << "void DialogMagasinier::fillRepairsTable()";
+//qDebug() << "void DialogMagasinier::fillRepairsTable()";
         ui->tableWidgetRepairsList->clearContents();
         ui->tableWidgetRepairsList->clearFocus();
         ui->tableWidgetRepairsList->setRowCount(0);
@@ -93,7 +93,7 @@ qDebug() << "void DialogMagasinier::fillRepairsTable()";
                                 "inner join Modele on Vehicule.modeleNum=Modele.modeleNum "
                                 "inner join Marque on Modele.marqueNum=Marque.marqueNum "
                                 "where reparDateFin != '0000-00-00 00:00:00'";
-qDebug() << tReqFillRepairs;
+//qDebug() << tReqFillRepairs;
         QSqlQuery reqFillRepairs(tReqFillRepairs);
         int noLigne = 0;
         while (reqFillRepairs.next()) {
@@ -127,19 +127,19 @@ qDebug() << tReqFillRepairs;
 
 void DialogMagasinier::on_tableWidgetStock_itemSelectionChanged()
 {
-qDebug() << "void DialogMagasinier::on_tableWidgetStock_itemSelectionChanged()";
+//qDebug() << "void DialogMagasinier::on_tableWidgetStock_itemSelectionChanged()";
     fillPartForm(ui->tableWidgetStock->currentRow());
 }
 
 void DialogMagasinier::on_toolButtonCancel_clicked()
 {
-qDebug() << "void DialogMagasinier::on_toolButtonCancel_clicked()";
+//qDebug() << "void DialogMagasinier::on_toolButtonCancel_clicked()";
     editMode(false);
 }
 
 void DialogMagasinier::envoiRequetePiece(QString typeReq)
 {
-qDebug() << "void DialogMagasinier::envoiRequetePiece(QString typeReq)";
+//qDebug() << "void DialogMagasinier::envoiRequetePiece(QString typeReq)";
     QString laRef = ui->lineEditRef->text();
     QString leLib = ui->lineEditLib->text();
     QString laQte = QString::number(ui->spinBoxQte->value());
@@ -152,49 +152,54 @@ qDebug() << "void DialogMagasinier::envoiRequetePiece(QString typeReq)";
     } else if (typeReq == "modif") {
         tReqPiece = "update Piece set pieceRef='" + laRef + "', pieceLib='" + leLib + "', pieceQteDispo=" + laQte + ", piecePU_HT=" + lePU_HT + ", piecePU_TTC=" + lePU_TTC + " where pieceRef='" + laRef + "'";
     }
-qDebug() << tReqPiece;
+//qDebug() << tReqPiece;
     QSqlQuery reqPiece(tReqPiece);
     fillStockTable();
 }
 
 void DialogMagasinier::on_toolButtonAdd_clicked()
 {
-qDebug() << "void DialogMagasinier::on_toolButtonAdd_clicked()";
+//qDebug() << "void DialogMagasinier::on_toolButtonAdd_clicked()";
     envoiRequetePiece("ajout");
 }
 
 void DialogMagasinier::on_toolButtonEdit_clicked()
 {
-qDebug() << "void DialogMagasinier::on_toolButtonEdit_clicked()";
+//qDebug() << "void DialogMagasinier::on_toolButtonEdit_clicked()";
     envoiRequetePiece("modif");
 }
 
 void DialogMagasinier::on_tabWidget_currentChanged(int index)
 {
-qDebug() << "void DialogMagasinier::on_tabWidget_currentChanged(int index)";
+//qDebug() << "void DialogMagasinier::on_tabWidget_currentChanged(int index)";
     switch(index) {
     case 0 : fillStockTable();
         break;
     case 1 : fillRepairsTable();
         ui->widgetPartsUsed->hide();
         break;
-    case 2 : break;
+    case 2 : fillMatchingTable();
+        fillComboBoxSuppliers();
+        break;
     default : break;
     }
 }
 
 void DialogMagasinier::on_tableWidgetRepairsList_itemSelectionChanged()
 {
-qDebug() << "void DialogMagasinier::on_tableWidgetRepairsList_itemSelectionChanged()";
+//qDebug() << "void DialogMagasinier::on_tableWidgetRepairsList_itemSelectionChanged()";
     ui->widgetPartsUsed->show();
     fillPartsList(ui->tableWidgetRepairsList->item(ui->tableWidgetRepairsList->currentRow(), 0)->text());
     fillPartsComboBox("");
     ui->spinBoxPartsQuantity->setMinimum(1);
+    ui->toolButtonAddToRepair->show();
+    ui->toolButtonEditToRepair->hide();
+    ui->toolButtonRemoveToRepair->hide();
 }
 
 void DialogMagasinier::fillPartsList(QString reparNum)
 {
-qDebug() << "void DialogMagasinier::fillPartsList(QString reparNum)";
+//qDebug() << "void DialogMagasinier::fillPartsList(QString reparNum)";
 ui->labelRepairNumber->setText(reparNum);
 ui->tableWidgetPartsUsed->clearContents();
 ui->tableWidgetPartsUsed->clearFocus();
@@ -203,7 +208,7 @@ ui->tableWidgetPartsUsed->setRowCount(0);
                             "from Piece inner join Besoin on Piece.pieceRef=Besoin.pieceRef "
                             "where reparNum=" + reparNum +
                             " and quantite>0";
-qDebug() << tReqPartsList;
+//qDebug() << tReqPartsList;
     QSqlQuery reqPartsList(tReqPartsList);
     int noLigne = 0;
     while(reqPartsList.next()) {
@@ -221,8 +226,8 @@ qDebug() << tReqPartsList;
 
 void DialogMagasinier::fillPartsComboBox(QString refPiece)
 {
-qDebug() << "void DialogMagasinier::fillPartsComboBox(QString refPiece)";
-    ui->comboBoxParts->clear();
+//qDebug() << "void DialogMagasinier::fillPartsComboBox(QString refPiece)";
+    ui->comboBoxParts->clear(); //QSqlQuery::value: not positioned on a valid record
     QString tReqPartsComboBox;
     if(refPiece == "") {
         tReqPartsComboBox = "select pieceRef, pieceLib, pieceQteDispo "
@@ -238,7 +243,7 @@ qDebug() << "void DialogMagasinier::fillPartsComboBox(QString refPiece)";
                                        "from Piece "
                                        "where pieceRef='" + refPiece + "'";
     }
-qDebug() << tReqPartsComboBox;
+//qDebug() << tReqPartsComboBox;
     QSqlQuery reqPartsComboBox(tReqPartsComboBox);
     while(reqPartsComboBox.next()) {
         QString pieceRef = reqPartsComboBox.value("pieceRef").toString();
@@ -255,35 +260,37 @@ void DialogMagasinier::on_comboBoxParts_currentIndexChanged(int index)
     QSqlQuery reqQteDispo(tReqQteDispo);
     reqQteDispo.first();
     int qteDispo = reqQteDispo.value("pieceQteDispo").toInt();
-qDebug() << pieceRef << qteDispo;
+//qDebug() << pieceRef << qteDispo;
     ui->spinBoxPartsQuantity->setMaximum(qteDispo);
 }
 
 void DialogMagasinier::on_toolButtonAddToRepair_clicked()
 {
-qDebug() << "void DialogMagasinier::on_toolButtonAddToRepair_clicked()";
+//qDebug() << "void DialogMagasinier::on_toolButtonAddToRepair_clicked()";
     QString pieceRef = ui->comboBoxParts->currentData().toString();
     QString quantite = QString::number(ui->spinBoxPartsQuantity->value());
     QString reparNum = ui->labelRepairNumber->text();
-qDebug() << pieceRef << quantite;
+//qDebug() << pieceRef << quantite;
     QString tReqAddToRepair = "insert into Besoin values (" + quantite + ", " + reparNum + ", '" + pieceRef + "')";
-qDebug() << tReqAddToRepair;
+//qDebug() << tReqAddToRepair;
     QSqlQuery reqAddToRepair(tReqAddToRepair);
     QString tReqSubstractPart = "update Piece set pieceQteDispo=pieceQteDispo-" + quantite + " where pieceRef='" + pieceRef + "'";
-qDebug() << tReqSubstractPart;
+//qDebug() << tReqSubstractPart;
     QSqlQuery reqSubstractPart(tReqSubstractPart);
     fillPartsList(reparNum);
     fillPartsComboBox("");
+    ui->spinBoxPartsQuantity->setMinimum(1);
 }
 
 void DialogMagasinier::on_tableWidgetPartsUsed_itemSelectionChanged()
 {
-qDebug() << "void DialogMagasinier::on_tableWidgetPartsUsed_itemSelectionChanged()";
+//qDebug() << "void DialogMagasinier::on_tableWidgetPartsUsed_itemSelectionChanged()";
     QString pieceRef = ui->tableWidgetPartsUsed->item(ui->tableWidgetPartsUsed->currentRow(), 0)->text();
     QString pieceLib = ui->tableWidgetPartsUsed->item(ui->tableWidgetPartsUsed->currentRow(), 1)->text();
     int pieceQteUtilisee = ui->tableWidgetPartsUsed->item(ui->tableWidgetPartsUsed->currentRow(), 2)->text().toInt();
     ui->toolButtonAddToRepair->hide();
     ui->toolButtonEditToRepair->show();
+    ui->toolButtonRemoveToRepair->show();
     ui->spinBoxPartsQuantity->setMinimum(0);
     fillPartsComboBox(pieceRef);
     fillPartsToRepairForm(pieceRef, pieceLib, pieceQteUtilisee);
@@ -291,45 +298,155 @@ qDebug() << "void DialogMagasinier::on_tableWidgetPartsUsed_itemSelectionChanged
 
 void DialogMagasinier::fillPartsToRepairForm(QString laRef, QString leLib, int laQteUtilisee)
 {
-qDebug() << "void DialogMagasinier::fillPartsToRepairForm(QString laRef, QString laQteUtilisee)";
+//qDebug() << "void DialogMagasinier::fillPartsToRepairForm(QString laRef, QString laQteUtilisee)";
     ui->comboBoxParts->setCurrentText('(' + laRef + ") " + leLib);
-qDebug() << ui->spinBoxPartsQuantity->maximum() << laQteUtilisee;
+//qDebug() << ui->spinBoxPartsQuantity->maximum() << laQteUtilisee;
     ui->spinBoxPartsQuantity->setMaximum(ui->spinBoxPartsQuantity->maximum() + laQteUtilisee);
     ui->spinBoxPartsQuantity->setValue(laQteUtilisee);
 }
 
-void DialogMagasinier::on_toolButtonEditToRepair_clicked()
+void DialogMagasinier::on_toolButtonEditToRepair_clicked(bool supprimer = false)
 {
-    qDebug() << "void DialogMagasinier::on_toolButtonEditToRepair_clicked()";
+//qDebug() << "void DialogMagasinier::on_toolButtonEditToRepair_clicked()";
     QString reparNum = ui->labelRepairNumber->text();
     QString pieceRef = ui->tableWidgetPartsUsed->item(ui->tableWidgetPartsUsed->currentRow(), 0)->text();
     int qteAvant = ui->tableWidgetPartsUsed->item(ui->tableWidgetPartsUsed->currentRow(), 2)->text().toInt();
-    int qteApres = ui->spinBoxPartsQuantity->value();
+    int qteApres;
+    if(supprimer) {
+        qteApres = 0;
+    } else {
+        qteApres = ui->spinBoxPartsQuantity->value();
+    }
     int diffQte = qteApres - qteAvant;
-qDebug() << qteAvant << qteApres << diffQte;
+//qDebug() << qteAvant << qteApres << diffQte;
     QString tReqEditToRepair;
     if(qteApres == 0) {
         tReqEditToRepair = "delete from Besoin where pieceRef='" + pieceRef + "' and reparNum=" + reparNum;
     } else {
         tReqEditToRepair = "update Besoin set quantite=quantite+" + QString::number(diffQte) + " where pieceRef='" + pieceRef + "' and reparNum=" + reparNum;
     }
-qDebug() << tReqEditToRepair;
+//qDebug() << tReqEditToRepair;
 QSqlQuery reqEditToRepair(tReqEditToRepair);
     QString tReqUpdatePart = "update Piece set pieceQteDispo=pieceQteDispo-(" + QString::number(diffQte) + ") where pieceRef='" + pieceRef + "'";
-qDebug() << tReqUpdatePart;
+//qDebug() << tReqUpdatePart;
     QSqlQuery reqUpdatePart(tReqUpdatePart);
     fillPartsList(reparNum);
     fillPartsComboBox("");
+    ui->toolButtonAddToRepair->show();
+    ui->toolButtonEditToRepair->hide();
+    ui->toolButtonRemoveToRepair->hide();
+    ui->spinBoxPartsQuantity->setMinimum(1);
+}
+
+void DialogMagasinier::on_toolButtonRemoveToRepair_clicked()
+{
+    on_toolButtonEditToRepair_clicked(true);
 }
 
 void DialogMagasinier::on_toolButtonCancelToRepair_clicked()
 {
-    qDebug() << "void DialogMagasinier::on_toolButtonCancelToRepair_clicked()";
+//qDebug() << "void DialogMagasinier::on_toolButtonCancelToRepair_clicked()";
     ui->tableWidgetPartsUsed->clearSelection();
     ui->tableWidgetPartsUsed->clearFocus();
     ui->spinBoxPartsQuantity->setValue(0);
     ui->toolButtonAddToRepair->show();
     ui->toolButtonEditToRepair->hide();
+    ui->toolButtonRemoveToRepair->hide();
     fillPartsComboBox("");
     ui->spinBoxPartsQuantity->setMinimum(1);
+}
+
+void DialogMagasinier::fillMatchingTable()
+{
+//qDebug() << "void DialogMagasinier::fillMatchingTable()";
+    ui->tableWidgetRefMatching->clearContents();
+    ui->tableWidgetRefMatching->setRowCount(0);
+    QString tReqMatchingTable = "select Piece.pieceRef, pieceLib, fournisseurNom, pieceRefFournisseur, fournisseurTel, fournisseurMail "
+                                "from Piece inner join Catalogue on Piece.pieceRef=Catalogue.pieceRef "
+                                    "inner join Fournisseur on Fournisseur.fournisseurNum=Catalogue.fournisseurNum "
+                                "order by Piece.pieceRef";
+//qDebug() << tReqMatchingTable;
+    QSqlQuery reqMatchingTable(tReqMatchingTable);
+    int noLigne = 0;
+    while(reqMatchingTable.next()) {
+        ui->tableWidgetRefMatching->setRowCount(noLigne+1);
+        QString pieceRef = reqMatchingTable.value("pieceRef").toString();
+        QString pieceLib = reqMatchingTable.value("pieceLib").toString();
+        QString fournisseurNom = reqMatchingTable.value("fournisseurNom").toString();
+        QString pieceRefFournisseur = reqMatchingTable.value("pieceRefFournisseur").toString();
+        QString fournisseurTel = reqMatchingTable.value("fournisseurTel").toString();
+        QString fournisseurMail = reqMatchingTable.value("fournisseurMail").toString();
+        ui->tableWidgetRefMatching->setItem(noLigne, 0, new QTableWidgetItem(pieceRef));
+        ui->tableWidgetRefMatching->setItem(noLigne, 1, new QTableWidgetItem(pieceLib));
+        ui->tableWidgetRefMatching->setItem(noLigne, 2, new QTableWidgetItem(fournisseurNom));
+        ui->tableWidgetRefMatching->setItem(noLigne, 3, new QTableWidgetItem(pieceRefFournisseur));
+        ui->tableWidgetRefMatching->setItem(noLigne, 4, new QTableWidgetItem(fournisseurTel));
+        ui->tableWidgetRefMatching->setItem(noLigne, 5, new QTableWidgetItem(fournisseurMail));
+        noLigne++;
+    }
+    ui->tableWidgetRefMatching->resizeColumnsToContents();
+}
+
+void DialogMagasinier::on_lineEditRefMatch_textChanged(const QString &arg1)
+{
+//qDebug() << "void DialogMagasinier::on_lineEditRefMatch_textChanged(const QString &arg1)";
+    for(int ligne = 0 ; ligne<ui->tableWidgetRefMatching->rowCount() ; ligne++) {
+       ui->tableWidgetRefMatching->showRow(ligne);
+    }
+    QString laRef = arg1;
+    if(laRef != "") {
+       for(int ligne = 0 ; ligne<ui->tableWidgetRefMatching->rowCount() ; ligne++) {
+           QString stringComparer;
+           for(int noChar = 0 ; noChar<laRef.size() ; noChar++) {
+               stringComparer += ui->tableWidgetRefMatching->item(ligne, 0)->text()[noChar];
+           }
+           if(stringComparer != laRef) {
+               ui->tableWidgetRefMatching->hideRow(ligne);
+           }
+       }
+    } else {
+        for(int ligne = 0 ; ligne<ui->tableWidgetRefMatching->rowCount() ; ligne++) {
+           ui->tableWidgetRefMatching->showRow(ligne);
+        }
+    }
+}
+
+void DialogMagasinier::on_pushButton_clicked()
+{
+//qDebug() << "void DialogMagasinier::on_pushButton_clicked()";
+    ui->lineEditRefMatch->setText("");
+}
+
+void DialogMagasinier::fillComboBoxSuppliers()
+{
+//qDebug() << "void DialogMagasinier::fillComboBoxSuppliers()";
+    ui->comboBoxSupplierMatch->clear();
+    ui->comboBoxSupplierMatch->addItem(tr("-- All suppliers --"));
+    QString tReqSuppliers = "select fournisseurNom from Fournisseur";
+//qDebug() << tReqSuppliers;
+    QSqlQuery reqSuppliers(tReqSuppliers);
+    while(reqSuppliers.next()) {
+        QString unFournisseur = reqSuppliers.value("fournisseurNom").toString();
+        ui->comboBoxSupplierMatch->addItem(unFournisseur);
+    }
+}
+
+void DialogMagasinier::on_comboBoxSupplierMatch_currentTextChanged(const QString &arg1)
+{
+    for(int ligne = 0 ; ligne<ui->tableWidgetRefMatching->rowCount() ; ligne++) {
+       ui->tableWidgetRefMatching->showRow(ligne);
+    }
+    QString debutOptionAll = arg1[0];
+    debutOptionAll += arg1[1];
+    if(debutOptionAll == "--") {
+        for(int ligne = 0 ; ligne<ui->tableWidgetRefMatching->rowCount() ; ligne++) {
+           ui->tableWidgetRefMatching->showRow(ligne);
+        }
+    } else {
+        for(int ligne = 0 ; ligne<ui->tableWidgetRefMatching->rowCount() ; ligne++) {
+           if(arg1 != ui->tableWidgetRefMatching->item(ligne, 2)->text()) {
+               ui->tableWidgetRefMatching->hideRow(ligne);
+           }
+        }
+    }
 }

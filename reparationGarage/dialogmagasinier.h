@@ -32,8 +32,11 @@ private slots:
     void on_tabWidget_currentChanged(int index);
 
     void fillStockTable();
+
     void fillPartForm(int row);
+
     void editMode(bool state);
+
     void fillRepairsTable();
 
     void on_tableWidgetRepairsList_itemSelectionChanged();
@@ -49,9 +52,21 @@ private slots:
 
     void fillPartsToRepairForm(QString laRef, QString leLib, int laQteUtilisee);
 
-    void on_toolButtonEditToRepair_clicked();
+    void on_toolButtonEditToRepair_clicked(bool supprimer);
+
+    void on_toolButtonRemoveToRepair_clicked();
 
     void on_toolButtonCancelToRepair_clicked();
+
+    void fillMatchingTable();
+
+    void on_lineEditRefMatch_textChanged(const QString &arg1);
+
+    void on_pushButton_clicked();
+
+    void fillComboBoxSuppliers();
+
+    void on_comboBoxSupplierMatch_currentTextChanged(const QString &arg1);
 
 private:
     Ui::DialogMagasinier *ui;
